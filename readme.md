@@ -1,6 +1,5 @@
 # ICPC Contest Image Tools
-
-This repository contains the tools necessary to build the ICPC Southeast Regional contestant image. The contestant image is a linux installation optimized for booting off a flash drive that is used by all the teams in our region.
+This repository contains a fork of the tools necessary to build the ICPC Southeast Regional contestant image. The contestant image is a linux installation optimized for booting off a flash drive that is used by all the teams in our region.
 
 ## Key Features
 This image has been tuned and tweaked over the years, but it currently supports the following:
@@ -41,17 +40,17 @@ cd icpcenv
 ```
 1. Make sure dependencies are met
   * Install required packages
-
     ```bash
-    sudo apt-get install qemu-system-x86 genisoimage bsdtar ansible
+    sudo apt-get install qemu-system-x86 genisoimage bsdtar ansible # Debian based Distros
+    sudo pacman -S qemu-qemu-system-x86 cdrtools libarchive ansible # Arch Based Distros
     ```
-  * Download the 64 bit version of Ubuntu 20.04 Server:
+  * Download the 64 bit version of Ubuntu 20.04.6 Server inside the cloned directory:
     ```bash
-    wget https://releases.ubuntu.com/20.04/ubuntu-20.04.5-live-server-amd64.iso
+    wget https://releases.ubuntu.com/20.04/ubuntu-20.04.6-live-server-amd64.iso
     ```
   * Download the 64 bit version of eclipse into the `files/` directory:
     ```bash
-    cd files && wget https://ftp.osuosl.org/pub/eclipse/technology/epp/downloads/release/2022-09/R/eclipse-java-2022-09-R-linux-gtk-x86_64.tar.gz
+    cd files && wget https://ftp2.osuosl.org/pub/eclipse/technology/epp/downloads/release/2023-06/R/eclipse-java-2023-06-R-linux-gtk-x86_64
     ```
   * Download kotlin zip to the `files` directory
     ```bash
