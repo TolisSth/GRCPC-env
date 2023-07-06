@@ -1,5 +1,7 @@
 # ICPC Contest Image Tools
-his repository contains a fork of the tools necessary to build the [ICPC Southeast Regional contestant image](https://github.com/icpc-environment/icpc-env). The contestant image is a linux installation optimized for booting off a flash drive that is used by all the teams in our region.
+This repository is a fork of the necessary tools to build the contestant image by the [ICPC Southeast Regional](https://github.com/icpc-environment/icpc-env).
+The image is a linux installation optimized for booting off a flash drive that is used by all the teams in our region.
+This is a trial test of the tools for the [ICPC Greece Regional](https://algoforum.upatras.gr/).
 
 ## Key Features
 We will reduce the features of the original image to supports the following:
