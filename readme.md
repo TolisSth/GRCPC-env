@@ -10,7 +10,6 @@ We will reduce the features of the original image to supports the following:
 * IDEs and developer tools: Eclipse, Code::Blocks, gvim, emacs, Visual Studio Code, IntelliJ
 * Local web server with copies of language documentation for: STL *(CPP)*, Java, Python3
 * Automatically populate the linux disk cache on boot to speed up response time for certain programs
-* Automatic login of teams to DOMjudge without giving teams access to their credentials
 * Advanced firewall to restrict team access to the network
 * Fat32 partition for teams to store files that allows for easy access after the contest
 * Simple management/set up for admins
@@ -57,23 +56,22 @@ cd icpc-env-greece
     ```bash
     cd files && curl -O https://github.com/JetBrains/kotlin/releases/download/v1.7.10/kotlin-compiler-1.7.10.zip
     ```
-1. [Untested & Undocumented] Run `secrets/gen-secrets.sh` to create some ssh keys/other secret data. Follow this with `./fetch-secrets.sh` to put them in the right place for ansible.
-2. [Untested & Undocumented] Copy `group_vars/all.dist` to `group_vars/all` and edit it to your liking. Specifically
+1. [Untested & Undocumented] Copy `group_vars/all.dist` to `group_vars/all` and edit it to your liking. Specifically
 set the icpcadmin password, and firewall expiration properly.
-3. [Untested & Undocumented] Run the `create_baseimg.sh` script to create an unattended installation disk for ubuntu, perform the installation,
+2. [Untested & Undocumented] Run the `create_baseimg.sh` script to create an unattended installation disk for ubuntu, perform the installation,
 and leave the base image ready for processing. During this step you can specify how large you want the image to be(Default 28500M to fit on most
 32G flash drives).
 ```bash
 # This step takes around 3-5minutes depending on system/internet speed.
 ./create_baseimg.sh # optionally add '-s 28500M' for 32GB images, or --no-usb remove the extra fat32 partition
 ```
-4. [Untested & Undocumented] Build the actual contestant image. This step takes the base image, boots it up,
+3. [Untested & Undocumented] Build the actual contestant image. This step takes the base image, boots it up,
 runs ansible to configure everything, performs a few final cleanup steps, and finally
 powers it off. Take a walk, this step takes some time(10-30minutes)
 ```bash
 ./build-final.sh
 ```
-5. [Untested & Undocumented] Take the newly minted image and copy it to a usb drive (or hard drive) (as root)
+4. [Untested & Undocumented] Take the newly minted image and copy it to a usb drive (or hard drive) (as root)
 ```
 # WARNING: Make sure to replace /dev/sdx with your actual device
 sudo dd if=output/2020-09-01_image-amd64.img of=/dev/sdx bs=1M status=progress oflag=direct conv=sparse
