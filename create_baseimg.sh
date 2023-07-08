@@ -1,12 +1,14 @@
 #!/bin/bash
 
+# Creates the image -- Only uses USERDATA and METADATA
+
 # Settings
-ISO64="ubuntu-22.04.1-live-server-amd64.iso"
+ISO64="ubuntu-22.04.2-live-server-amd64.iso" # Changed it to 22.04.2 hopping that nothing will break
 OUT64="unattended-${ISO64}"
 IMG64="base-amd64.img"
 
 TMPDIR="tmp"
-USERDATA="configs/2204_autoinstall.yaml"
+USERDATA="configs/2204_autoinstall.yaml" # Correct since we are using 2204 Image
 METADATA="configs/2204_metadata"
 
 function usage() {
@@ -42,10 +44,10 @@ done
 # Default image size 14700M(fits on an 16G flash drive)
 # IMGSIZE=${IMGSIZE:-14700M}
 # Default image size 28500M(fits on an 32G flash drive)
-IMGSIZE=${IMGSIZE:-28500M}
+IMGSIZE=${IMGSIZE:-28500M} # 32G B file by default -- If you want to buy 64G flash drives this must change.
 
-
-function create_unattended_iso() {
+# Leave this as it is probably
+function create_unattended_iso(){
   CONTENTSDIR="$TMPDIR/contents"
   rm -rf "$CONTENTSDIR"
   mkdir -p "$CONTENTSDIR"
