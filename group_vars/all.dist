@@ -1,14 +1,30 @@
 ---
-icpc_timezone: 'America/New_York'
+# Configure Timerzone
+icpc_timezone: 'Europe/Athens'
 
+# They Configure The Home Directories of the two users.
 git_user_home: 'https://github.com/icpc-environment/fuzzy-octo-dangerzone.git'
 git_admin_home: 'https://github.com/icpc-environment/tripping-computing-machine.git'
 
+# [Sfikas] Configure the ICPC admin password. Is this the system admin password or the password of the
+# Tool they use to host the contest. Probably they create another user, apart from the team
+# That has access to the contest server.
 icpcadmin_pass: icpcadmin
 
-
 allowed_domains:
-  # - seusa.vanb.org
+    
+  # [Sfikas] Access to the Site of the Competition of The Sutheast USA Regional Contest
+  # They have also host the Documentation for the supported languages in their 
+  # WebSite -- For Us we could simplify with the Following:
+  - https://algoforum.upatras.gr/                                   # Do we also have external dependencies ?? 
+  - https://en.cppreference.com/w/c/language
+  - https://en.cppreference.com/w/
+  - https://docs.oracle.com/en/java/javase/11/docs/api/index.html   # Imporant Change to the java Version we will use.
+  - https://docs.python.org/3/
+  - https://chat.openai.com/                                        # jk jk :)
+  # IMPORTANT ADD THE IP/DOMAIN OF THE CONTEST SERVER IN EACH CITY
+
+  # - seusa.vanb.org = Their Site
   - seusa21-d1.kattis.com
   - seusa21-d2.kattis.com
 
@@ -31,22 +47,27 @@ squid_autologin_urls: []
 
 # After this date the restrictions for allowed_domains will not apply
 # Must be period separated in the format "YYYY.MM.DD"
+# [Sfikas] Set this to 2077 or 2049 or 2099
 squid_unblock_date: 2022.03.06
 
+# [Sfikas] Wireguard = Delete this.
 # this is the wireguard server's wireguard interface ip address
 # i.e. the address we can use when we want to talk to the vpn server
 contestmanager_ip: fd00:a0a8:34d:2a00::1
 
+# [Sfikas] Delete this as well
 # This is the config server used by the icpc_setup script. It contains sites, teams, and printer configurations.
 # See the readme for more information on what files this server needs to return
 config_url: http://configs.cloudcontest.org
 
+# [Sfikas] Deleteeee? or change the host ?
 # could be contestmanager.icpcnet.internal and run over the wireguard vpn
 # not sure which is likely to be more reliable...
-ansible_pull_host: icpc.cloudcontest.org
+ansible_pull_host: icpc.cloudcontest.org # Not a real url ..... so Delete ? 
 ansible_pull_port: 443
 ansible_pull_path: ~/ansible
 
+# [Sfikas] We do not use WireGuard as the vpn.
 # The host details for the wireguard registration script. It connects over ssh to
 # this and expects the output of that ssh session to be a wireguard config file.
 # This is then loaded and wireguard started so the client connects to the VPN.
@@ -64,10 +85,12 @@ wg_vpn_server_external_ip: 0.1.2.3
 wg_vpn_server_wg_port: 51820
 wg_vpn_server_subnet: fd00:a0a8:34d:2a00::/64
 
-
+# [Sfikas] Delete ?
 # Maybe more accurately named "ssh tunnel host"
 jumpbox_host: icpc.cloudcontest.org
 
+# [Sfikas] This is fine as long as we understand how the languages are beeing set up.
+# Check the java version that is beeing downloaded
 languages:
   - c
   - cpp
@@ -99,6 +122,7 @@ languages:
   # - r
   # - scala
 
+# [Sfikas] No vscode ?
 devtools:
   - intellij-idea
   - intellij-clion
