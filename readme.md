@@ -52,22 +52,23 @@ cd icpc-env-greece
     ```bash
     cd files && curl -O https://ftp2.osuosl.org/pub/eclipse/technology/epp/downloads/release/2023-06/R/eclipse-java-2023-06-R-linux-gtk-x86_64.tar.gz
 
-1. [Untested & Undocumented] Copy `group_vars/all.dist` to `group_vars/all` and edit it to your liking. Specifically
+1. Run secrets/gen-secrets.sh to create some ssh keys/other secret data. Follow this with ./fetch-secrets.sh to put them in the right place for ansible.
+2. Copy `group_vars/all.dist` to `group_vars/all` and edit it to your liking. Specifically
 set the icpcadmin password, and firewall expiration properly.
-2. [Untested & Undocumented] Run the `create_baseimg.sh` script to create an unattended installation disk for ubuntu, perform the installation,
+3. Run the `create_baseimg.sh` script to create an unattended installation disk for ubuntu, perform the installation,
 and leave the base image ready for processing. During this step you can specify how large you want the image to be(Default 28500M to fit on most
 32G flash drives).
 ```bash
 # This step takes around 3-5minutes depending on system/internet speed.
 ./create_baseimg.sh # optionally add '-s 28500M' for 32GB images, or --no-usb remove the extra fat32 partition
 ```
-3. [Untested & Undocumented] Build the actual contestant image. This step takes the base image, boots it up,
+4. Build the actual contestant image. This step takes the base image, boots it up,
 runs ansible to configure everything, performs a few final cleanup steps, and finally
 powers it off. Take a walk, this step takes some time(10-30minutes)
 ```bash
 ./build-final.sh
 ```
-4. [Untested & Undocumented] Take the newly minted image and copy it to a usb drive (or hard drive) (as root)
+5. Take the newly minted image and copy it to a usb drive (or hard drive) (as root)
 ```
 # WARNING: Make sure to replace /dev/sdx with your actual device
 sudo dd if=output/2020-09-01_image-amd64.img of=/dev/sdx bs=1M status=progress oflag=direct conv=sparse
