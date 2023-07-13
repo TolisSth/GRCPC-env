@@ -51,11 +51,7 @@ cd icpc-env-greece
   * Download the 64 bit version of eclipse into the `files/` directory:
     ```bash
     cd files && curl -O https://ftp2.osuosl.org/pub/eclipse/technology/epp/downloads/release/2023-06/R/eclipse-java-2023-06-R-linux-gtk-x86_64.tar.gz
-    ```
-  * Download kotlin zip to the `files` directory
-    ```bash
-    cd files && curl -O https://github.com/JetBrains/kotlin/releases/download/v1.7.10/kotlin-compiler-1.7.10.zip
-    ```
+
 1. [Untested & Undocumented] Copy `group_vars/all.dist` to `group_vars/all` and edit it to your liking. Specifically
 set the icpcadmin password, and firewall expiration properly.
 2. [Untested & Undocumented] Run the `create_baseimg.sh` script to create an unattended installation disk for ubuntu, perform the installation,
