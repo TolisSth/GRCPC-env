@@ -1,14 +1,19 @@
 #!/bin/bash
 
-# Creates the image -- Only uses USERDATA and METADATA
+# Creates the image - Configures Autoinstall procedure
 
 # Settings
-ISO64="ubuntu-22.04.2-live-server-amd64.iso" # Changed it to 22.04.2 hopping that nothing will break
+ISO64="ubuntu-22.04.2-live-server-amd64.iso" # Changed it to 22.04.2 server Image
 OUT64="unattended-${ISO64}"
 IMG64="base-amd64.img"
 
-TMPDIR="tmp"
-USERDATA="configs/2204_autoinstall.yaml" # Correct since we are using 2204 Image
+
+TMPDIR="tmp"  # At the moment this is empty
+
+# This is the autoinstall configuration
+# See: https://ubuntu.com/server/docs/install/autoinstall
+# We are using user-data and meta-data files to provide the configuration
+USERDATA="configs/2204_autoinstall.yaml"
 METADATA="configs/2204_metadata"
 
 function usage() {
@@ -42,15 +47,14 @@ while [[ $# -ge 1 ]]; do
 done
 
 # Default image size 14700M(fits on an 16G flash drive)
-# IMGSIZE=${IMGSIZE:-14700M}
-# Default image size 28500M(fits on an 32G flash drive)
-IMGSIZE=${IMGSIZE:-28500M} # 32G B file by default -- If you want to buy 64G flash drives this must change.
+# Alternatively 28500M(fits on an 32G flash drive) 
+IMGSIZE=${IMGSIZE:-14700M}
 
-# Leave this as it is probably
+
 function create_unattended_iso(){
   CONTENTSDIR="$TMPDIR/contents"
-  rm -rf "$CONTENTSDIR"
-  mkdir -p "$CONTENTSDIR"
+  rm -rf "$CONTENTSDIR" # Remove /tmp/contents directory if it exists
+  mkdir -p "$CONTENTSDIR" # Create /tmp/contents directory
 
   # Extract the efi partition out of the iso
   read -a EFI_PARTITION < <(parted -m $ISO unit b print | awk -F: '$1 == "2" { print $2,$3,$4}' | tr -d 'B')
@@ -58,7 +62,7 @@ function create_unattended_iso(){
   # # this is basically /usr/lib/grub/i386-pc/boot_hybrid.img from grub-pc-bin package (we just skip the end bits which xorriso will recreate)
   dd if=$ISO of=$TMPDIR/mbr.img bs=1 count=440
 
-
+  # Copy the contents of the iso to the contents directory
   #Use bsdtar if possible to extract(no root required)
   if hash bsdtar 2>/dev/null; then
     bsdtar xfp $ISO -C $CONTENTSDIR
@@ -72,7 +76,7 @@ function create_unattended_iso(){
     sudo umount "$LOOPDIR"
   fi
 
-
+  # Create the autoinstall directory and copy the user-data and meta-data files
   mkdir -p "$CONTENTSDIR/autoinst"
   cp "$USERDATA" "$CONTENTSDIR/autoinst/user-data"
   cp "$METADATA" "$CONTENTSDIR/autoinst/meta-data"
@@ -97,6 +101,7 @@ menuentry "Install Ubuntu Server (Unattended)" {
 	initrd	/casper/initrd
 }
 EOF
+  # Debugging purposes -> Prints every command as it is executed to the terminal 
   set -x
 
   # Finally pack up an ISO the new way
@@ -116,23 +121,26 @@ EOF
     -e '--interval:appended_partition_2:::' \
     -no-emul-boot \
     $CONTENTSDIR
+
+  # Disables set -x
   set +x
 
   # cleanup
   rm -rf "$CONTENTSDIR"
 }
 
+# Create the unattended iso
 create_unattended_iso
 
-# Install that base image
-rm -f "output/$IMG"
-set -x
-qemu-img create -f qcow2 -o size="$IMGSIZE" "output/$IMG"
-qemu-system-x86_64 \
-  --enable-kvm -m 4096 -global isa-fdc.driveA= \
-  -drive file="output/$IMG",index=0,media=disk,format=qcow2 \
-  -cdrom $OUTISO -boot order=d \
-  -net nic -net user,hostfwd=tcp::5222-:22,hostfwd=tcp::5280-:80 \
-  -vga qxl -vnc :0 \
-  -usbdevice tablet
-# -global isa-fdc.driveA= is used to disable floppy drive(gets rid of a warning message)
+# # Install that base image
+# rm -f "output/$IMG"
+# set -x
+# qemu-img create -f qcow2 -o size="$IMGSIZE" "output/$IMG"
+# qemu-system-x86_64 \
+#   --enable-kvm -m 4096 -global isa-fdc.driveA= \
+#   -drive file="output/$IMG",index=0,media=disk,format=qcow2 \
+#   -cdrom $OUTISO -boot order=d \
+#   -net nic -net user,hostfwd=tcp::5222-:22,hostfwd=tcp::5280-:80 \
+#   -vga qxl -vnc :0 \
+#   -usbdevice tablet
+# # -global isa-fdc.driveA= is used to disable floppy drive(gets rid of a warning message)
