@@ -3,7 +3,7 @@
 # Creates the image - Configures Autoinstall procedure
 
 # Settings
-ISO64="ubuntu-22.04.2-live-server-amd64.iso" # Changed it to 22.04.2 server Image
+ISO64="ubuntu-22.04.1-live-server-amd64.iso" # Changed it to 22.04.2 server Image
 OUT64="unattended-${ISO64}"
 IMG64="base-amd64.img"
 
@@ -56,11 +56,15 @@ function create_unattended_iso(){
   rm -rf "$CONTENTSDIR" # Remove /tmp/contents directory if it exists
   mkdir -p "$CONTENTSDIR" # Create /tmp/contents directory
 
+  echo "Extracting ISO contents..."
+
   # Extract the efi partition out of the iso
   read -a EFI_PARTITION < <(parted -m $ISO unit b print | awk -F: '$1 == "2" { print $2,$3,$4}' | tr -d 'B')
   dd if=$ISO of=$TMPDIR/efi.img skip=${EFI_PARTITION[0]} bs=1 count=${EFI_PARTITION[2]}
   # # this is basically /usr/lib/grub/i386-pc/boot_hybrid.img from grub-pc-bin package (we just skip the end bits which xorriso will recreate)
   dd if=$ISO of=$TMPDIR/mbr.img bs=1 count=440
+
+  echo "Read EFI partition from ISO"
 
   # Copy the contents of the iso to the contents directory
   #Use bsdtar if possible to extract(no root required)
