@@ -1,9 +1,0 @@
----
-- name: install vmtouch
-  apt: pkg=vmtouch state=present
-
-- name: add init script so this runs on boot
-  copy: src=files/warm-fs-cache.service dest=/etc/systemd/system/warm-fs-cache.service
-
-- name: enable warm-fs-cache service
-  service: name=warm-fs-cache enabled=yes
