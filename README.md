@@ -27,4 +27,4 @@ The branch over the time aims to provide a barebone system with only the necessi
   curl -O https://mu.releases.ubuntu.com/22.04.1/ubuntu-22.04.1-live-server-amd64.iso
   ```
 2. Create ssh-keys: `bash ./secrets/gen-secrets.sh` and place the keys correctly using `bash ./fetch-secrets.sh`
-3. Execute `bash ./create_baseimg.sh` *(Optional Arguments: `-s 28500M` for 32GB images or `--no-usb` to remove an extra fat32 partition for easy transfer of files.)*. The **AutoInstall** feature of Ubuntu server Images is used to autoinstall the system based on the configuration files found on `/configs/`
+3. Execute `sudo bash ./create_baseimg.sh` *(Optional Arguments: `-s 28500M` for 32GB images or `--no-usb` to remove an extra fat32 partition for easy transfer of files.)*. The **AutoInstall** feature of Ubuntu server Images is used to autoinstall the system based on the configuration files found on `/configs/`
