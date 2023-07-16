@@ -1,9 +1,4 @@
-# cloud-init config
-# https://ubuntu.com/server/docs/install/autoinstall-reference - docs on autoinstall
-
-# Additional useful resources:
-# https://utcc.utoronto.ca/~cks/space/blog/linux/Ubuntu2004ISOAutoinst - how to bundle autoinstall with the cdrom
-# https://utcc.utoronto.ca/~cks/space/blog/linux/Ubuntu2004AutoinstFormat - good example of autoinstall setup
+#cloud-config
 
 # Set up ssh/sudo access to the installer environment(so debugging any issues during installation is possible)
 users:
@@ -19,7 +14,10 @@ users:
 ssh_authorized_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB9pjASmP4wQkhJ1VEbl0l1Vgn3lsOzctRS2m0wBVlaO ICPC ImageAdmin Key
 
-
+# Docs on autoinstall are found here: https://ubuntu.com/server/docs/install/autoinstall-reference
+# Additional useful resources:
+# https://utcc.utoronto.ca/~cks/space/blog/linux/Ubuntu2004ISOAutoinst - how to bundle autoinstall with the cdrom
+# https://utcc.utoronto.ca/~cks/space/blog/linux/Ubuntu2004AutoinstFormat - good example of autoinstall setup
 autoinstall:
   version: 1
   # Locale and keyboard layout
@@ -28,7 +26,7 @@ autoinstall:
       layout: us
       variant: ''
       toggle: null
-  timezone: Europe/Athens
+  timezone: America/New_York
   network:
     version: 2
     ethernets:
@@ -59,24 +57,23 @@ autoinstall:
       hostname: icpc
       username: imageadmin
       # This crypted password corresponds to 'imageadmin'
-      password: '$6$D1vml7SluH/Pfw43$upy5UKqf6iZtLGXRXcAUAqCDMpFMWiZcve9tj16/5l1eD8j5YWoVYCmLvxl6eXrRmSKSngIiH5.NJBNMx.SZg0'
+      password: $6$D1vml7SluH/Pfw43$upy5UKqf6iZtLGXRXcAUAqCDMpFMWiZcve9tj16/5l1eD8j5YWoVYCmLvxl6eXrRmSKSngIiH5.NJBNMx.SZg0
 
   # Set up ssh with a public key we'll use to bootstrap the rest of the system
   ssh:
-      install-server: yes # Whether to install openssh-server (default 'false')
-      authorized-keys:  # List of ssh public keys to install for the initial user's account
+      install-server: yes
+      authorized-keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB9pjASmP4wQkhJ1VEbl0l1Vgn3lsOzctRS2m0wBVlaO ICPC ImageAdmin Key
-      allow-pw: yes # Whether to enable password authentication for ssh (default 'false')
+      allow-pw: yes
 
-  # List of packages to be passed to "apt-get install"
   packages: []
   # updates: all # install all updates after the installer finishes (default 'security')
-  updates: all
+  updates: security # install all updates after the installer finishes (default 'security')
   late-commands:
       # Fix the filesystem type of the icpc fat32 partition (curtain sets it to "Linux filesystem", even though we specify partition_type)
       - sfdisk --part-type /dev/sda 3 EBD0A0A2-B9E5-4433-87C0-68B6B72699C7 # TAG:USB_PARTITION_ENABLED
 
-      # Enable passwordless sudo for the sudo group
+      # Enable passwordless sudo
       - echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/icpc
       - cp /target/etc/default/grub /target/etc/default/grub.orig
       - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /target/etc/default/grub
