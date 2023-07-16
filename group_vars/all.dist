@@ -71,19 +71,19 @@ ansible_pull_path: ~/ansible
 # The host details for the wireguard registration script. It connects over ssh to
 # this and expects the output of that ssh session to be a wireguard config file.
 # This is then loaded and wireguard started so the client connects to the VPN.
-wireguard_host: icpc.cloudcontest.org
-wireguard_client_user: wg_client
-wireguard_port: 443
+#wireguard_host: icpc.cloudcontest.org
+#wireguard_client_user: wg_client
+#wireguard_port: 443
 
 # Generate this using `wg genkey`, it is the server's wireguard private key
-wg_vpn_server_private_key: wEN5iYXA8M4JD3HIa17mhtDID3+/HQbLFGVN9USC9XE=
+#wg_vpn_server_private_key: wEN5iYXA8M4JD3HIa17mhtDID3+/HQbLFGVN9USC9XE=
 # This is the external hostname that your management server resolves to
-wg_vpn_server_external_hostname: icpc.cloudcontest.org
+#wg_vpn_server_external_hostname: icpc.cloudcontest.org
 # This needs to match the externally visible ip address of your management server
-wg_vpn_server_external_ip: 0.1.2.3
+#wg_vpn_server_external_ip: 0.1.2.3
 # the port wireguard will use (maybe change to 443 to help bypass firewalls)
-wg_vpn_server_wg_port: 51820
-wg_vpn_server_subnet: fd00:a0a8:34d:2a00::/64
+#wg_vpn_server_wg_port: 51820
+#wg_vpn_server_subnet: fd00:a0a8:34d:2a00::/64
 
 # [Sfikas] Delete ?
 # Maybe more accurately named "ssh tunnel host"

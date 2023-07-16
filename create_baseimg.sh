@@ -129,8 +129,9 @@ rm -f "output/$IMG"
 set -x
 qemu-img create -f qcow2 -o size="$IMGSIZE" "output/$IMG"
 qemu-system-x86_64 \
-  --enable-kvm -m 4096 -global isa-fdc.driveA= \
-  -drive file="output/$IMG",index=0,media=disk,format=qcow2 \
+  --enable-kvm -m 4096 \
+  -device floppy,unit=0,drive=driveA\
+  -drive id=driveA,file="output/$IMG",if=none,format=qcow2 \
   -cdrom $OUTISO -boot order=d \
   -net nic -net user,hostfwd=tcp::5222-:22,hostfwd=tcp::5280-:80 \
   -vga qxl -vnc :0 \
