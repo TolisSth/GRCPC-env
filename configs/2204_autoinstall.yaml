@@ -70,8 +70,10 @@ autoinstall:
   # updates: all # install all updates after the installer finishes (default 'security')
   updates: security # install all updates after the installer finishes (default 'security')
   late-commands:
-      # Fix the filesystem type of the icpc fat32 partition (curtain sets it to "Linux filesystem", even though we specify partition_type)
-      - sfdisk --part-type /dev/sda 3 EBD0A0A2-B9E5-4433-87C0-68B6B72699C7 # TAG:USB_PARTITION_ENABLED
+      # If the Ubuntu 22.04.2 image is used as the base, skip this step. If not uncomment the next command:
+      #- sfdisk --part-type /dev/sda 3 EBD0A0A2-B9E5-4433-87C0-68B6B72699C7 # TAG:USB_PARTITION_ENABLED
+      # Explanation: Fix the filesystem type of the icpc fat32 partition (curtain sets it to "Linux filesystem",
+      # even though we specify partition_type)
 
       # Enable passwordless sudo
       - echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/icpc
@@ -79,7 +81,6 @@ autoinstall:
       - sed -ie 's/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /target/etc/default/grub
       # Do these matter(or did they get nuked above?)
       - sed -ie 's/quiet splash//' /target/etc/default/grub
-
       - curtin in-target update-grub2
 
       # Poweroff because otherwise it'll reboot

@@ -3,7 +3,7 @@
 # Creates the image - Configures Autoinstall procedure
 
 # Settings
-ISO64="ubuntu-22.04.1-live-server-amd64.iso"
+ISO64="ubuntu-22.04.2-live-server-amd64.iso"
 OUT64="unattended-${ISO64}"
 IMG64="base-amd64.img"
 
@@ -133,14 +133,28 @@ EOF
 # Create the unattended iso
 create_unattended_iso
 
+# In order to SSH into the virtual machine:
+# ssh -i ../configs/imageadmin-ssh_key -p 5222 imageadmin@localhost
+
 # Install that base image
 rm -f "output/$IMG"
-#set -x
+set -x
+
+# Allocate the virtual disk
 #qemu-img create -f qcow2 -o size="$IMGSIZE" "output/$IMG"
+
+# Documentation: https://www.qemu.org/docs/master/system/invocation.html
+
+# Emulate the installation
 #qemu-system-x86_64 \
-#	-m 4096 -global isa-fdc.driveA= \
-#	-drive file="output/$IMG",index=0,media=disk,format=qcow2 \
-#	-cdrom $OUTISO -boot order=d \
-#	-net nic -net user,hostfwd=tcp::5222-:22,hostfwd=tcp::5280-:80 \
-#	-vga qxl -vnc :0 \
-#	-usbdevice tablet #--enable-kvm -m 4096 -global isa-fdc.driveA= \
+#	-enable-kvm \																												# Enable KVM
+#	-m 4096 \																														# 4GB of RAM
+#	-smp 4 \																														# 4 cores
+#	-device floppy,unit=0,drive=driveA																	# 
+# -drive id=driveA,file="output/$IMG",if=none,format=qcow2 \					# Add the virtual disk											
+#	-cdrom $OUTISO																											# Add the installation media
+# -boot order=d \																											# Boot from the cdrom
+#	-net nic -net user,hostfwd=tcp::5222-:22,hostfwd=tcp::5280-:80 \		# Forward ports 22 and 80
+#	-vga qxl \																													# Use qxl video card
+# -vnc :0 \																														# Redirect vga display to vnc
+#	-usbdevice tablet																										# Use tablet as mouse
