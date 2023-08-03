@@ -98,7 +98,7 @@ set menu_color_highlight=black/light-gray
 
 menuentry "Install Ubuntu Server (Unattended)" {
   set gfxpayload=keep
-  linux	/casper/vmlinuz  autoinstall ds=nocloud\;seedfrom=/cdrom/autoinst/ net.ifnames=0 ---
+  linux	/casper/vmlinuz  autoinstall quiet ds=nocloud\;seedfrom=/cdrom/autoinst/ net.ifnames=0 ---
 	initrd	/casper/initrd
 }
 EOF
@@ -142,7 +142,7 @@ rm -f "output/$IMG"
 set -x
 
 # Allocate the virtual disk
-#qemu-img create -f qcow2 -o size="$IMGSIZE" "output/$IMG"
+qemu-img create -f qcow2 -o size="$IMGSIZE" "output/$IMG"
 
 # Documentation: https://www.qemu.org/docs/master/system/invocation.html
 #	-enable-kvm \																								# Enable KVM
@@ -160,14 +160,10 @@ set -x
 # In case of error in host forwarding ports, make sure no other process is using them.
 
 # Emulate the installation
-# qemu-system-x86_64 \
-# -m 4096 \
-# -smp 4 \
-# -device floppy,unit=0,drive=driveA \
-# -drive id=driveA,file="output/$IMG",if=none,format=qcow2 \
-# -cdrom $OUTISO \
-# -boot order=d \
-# -net nic -net user,hostfwd=tcp::5222-:22,hostfwd=tcp::5280-:80 \
-# -vga qxl \
-# -vnc :0 \
-# -usbdevice tablet
+qemu-system-x86_64 \
+  --enable-kvm -m 4096 \
+  -drive file="output/$IMG",index=0,media=disk,format=qcow2 \
+  -cdrom $OUTISO -boot order=d \
+  -net nic -net user,hostfwd=tcp::5222-:22,hostfwd=tcp::5280-:80 \
+  -vga qxl -vnc :0 \
+  -usbdevice tablet
