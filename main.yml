@@ -17,7 +17,6 @@
     - name: copy updated pam sudo config so it reads .pam_environment
       copy: src=files/pam_sudo dest=/etc/pam.d/sudo
 
-
     - name: disable fsync for dpkg
       copy: dest=/etc/dpkg/dpkg.cfg.d/02-dpkg-no-sync content="force-unsafe-io"
     - name: disable apt cache
@@ -41,7 +40,6 @@
         state: present
     - name: run grub-install for efi
       command: grub-install --no-nvram --uefi-secure-boot --target=x86_64-efi /dev/sda
-
 
     - name: remove snap package
       apt:
@@ -75,23 +73,11 @@
         state: absent
         purge: yes
 
-    - import_tasks: 'playbooks/gui.yml'
-
-    - import_tasks: 'playbooks/reverseproxy.yml'
+    #- import_tasks: 'playbooks/gui.yml'
     - import_tasks: 'playbooks/compilers.yml'
-    - import_tasks: 'playbooks/devel_tools.yml'
-
-    - import_tasks: 'playbooks/icpc.yml'
-    - import_tasks: 'playbooks/vmtouch.yml'
-
-    - import_tasks: 'playbooks/firewall.yml'
-    - import_tasks: 'playbooks/system.yml'
-
-    # Management related things
-    - import_tasks: 'playbooks/ansible-pull.yml'
-    - import_tasks: 'playbooks/reversetunnel.yml'
-    - import_tasks: 'playbooks/vpn.yml'
-    - import_tasks: 'playbooks/monitoring.yml'
+    #- import_tasks: 'playbooks/reverseproxy.yml'
+    #- import_tasks: 'playbooks/firewall.yml'
+    #- import_tasks: 'playbooks/system.yml'
 
     - name: autoremove/autoclean apt
       block:
@@ -111,12 +97,6 @@
     - name: copy version info
       copy: content="{{git_revision.stdout}}\n" dest=/icpc/version
 
-    # - name: zero out the disk so it's more optimal (this is part of the makeDist script)
-    #   shell: |
-    #     dd if=/dev/zero of=/empty bs=1M || true
-    #     rm -f /empty
-    #     sync
-
   handlers:
     - name: clear user password
       command: passwd -d contestant
@@ -124,16 +104,16 @@
     - name: update grub
       command: /usr/sbin/update-grub
 
-    - name: restart squid
-      service: name=squid state=restarted
+    # - name: restart squid
+    #   service: name=squid state=restarted
 
-    - name: update-ca-certificates
-      command: /usr/sbin/update-ca-certificates
+    # - name: update-ca-certificates
+    #  command: /usr/sbin/update-ca-certificates
 
     - name: restart ssh
       service: name=ssh state=restarted
-
-    - name: reload nginx
-      ansible.builtin.service:
-        name: nginx
-        state: reloaded
+   
+  #  - name: reload nginx
+  #     ansible.builtin.service:
+  #       name: nginx
+  #       state: reloaded 
