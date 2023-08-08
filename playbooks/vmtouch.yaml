@@ -1,0 +1,15 @@
+---
+
+# This playbook installs vmtouch and sets up a systemd service to warm the
+# filesystem cache on boot. This is useful for the ICPC contest system, because
+# the contest system is a live USB, Optimization is important.
+# We create a system service (warm-fs-cache) found on files and enable it.
+
+- name: install vmtouch
+  apt: pkg=vmtouch state=present
+
+- name: add init script so this runs on boot
+  copy: src=files/services/warm-fs-cache.service dest=/etc/systemd/system/warm-fs-cache.service
+
+- name: enable warm-fs-cache service
+  service: name=warm-fs-cache enabled=yes

@@ -11,7 +11,7 @@ PIDFILE="tmp/qemu.pid"
 ALIVE=0
 
 IMGFILE="output/$(date +%Y-%m-%d)_image-amd64.img"
-if [[ $IMGFILE != 'all' ]]; then
+if [[ $VARIANT != 'all' ]]; then
   IMGFILE="output/$VARIANT-$(date +%Y-%m-%d)_image-amd64.img"
 fi
 
@@ -87,7 +87,8 @@ vm ansible_port=$SSHPORT ansible_host=127.0.0.1
 vm
 EOF
 
-ANSIBLE_HOST_KEY_CHECKING=False  ansible-playbook -i $INVENTORY_FILE  --ssh-extra-args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --diff --become -u imageadmin --private-key $SSH_BUILD_KEY main.yml
+# Execute ansible as imageadmin user, using the ssh key we generated provided in the configs directory. Run main.yaml
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i $INVENTORY_FILE  --ssh-extra-args="-o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --diff --become -u imageadmin --private-key $SSH_BUILD_KEY main.yaml
 rm -f $INVENTORY_FILE
 
 ssh -i $SSH_ICPCADMIN_KEY -o BatchMode=yes -o ConnectTimeout=1 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes  icpcadmin@localhost -p $SSHPORT sudo reboot

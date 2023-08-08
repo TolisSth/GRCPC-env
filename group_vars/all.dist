@@ -2,45 +2,12 @@
 # Configure Timerzone
 icpc_timezone: 'Europe/Athens'
 
-# They Configure The Home Directories of the two users.
-git_user_home: 'https://github.com/icpc-environment/fuzzy-octo-dangerzone.git'
-git_admin_home: 'https://github.com/icpc-environment/tripping-computing-machine.git'
-
-# [Sfikas] Configure the ICPC admin password. Is this the system admin password or the password of the
+# Configure the ICPC admin password. Is this the system admin password or the password of the
 # Tool they use to host the contest. Probably they create another user, apart from the team
 # That has access to the contest server.
 icpcadmin_pass: icpcadmin
 
-allowed_domains:
-  # [Sfikas] Access to the Site of the Competition of The Sutheast USA Regional Contest
-  # They have also host the Documentation for the supported languages in their 
-  # WebSite -- For Us we could simplify with the Following:
-  - https://algoforum.upatras.gr/                                  
-  - https://en.cppreference.com/w/c/language
-  - https://en.cppreference.com/w/
-  - https://docs.oracle.com/en/java/javase/11/docs/api/index.html   
-  - https://docs.python.org/3/
-  # IMPORTANT ADD THE IP/DOMAIN OF THE CONTEST SERVER IN EACH CITY
-
-allowed_urls: []
-  # Maybe host language docs here instead? Makes for less on the image itself
-
-# After this date the restrictions for allowed_domains will not apply
-# Must be period separated in the format "YYYY.MM.DD"
-# [Sfikas] Set this to 2077 or 2049 or 2099
-squid_unblock_date: 2029.01.01
-
-# could be contestmanager.icpcnet.internal and run over the wireguard vpn
-# not sure which is likely to be more reliable...
-ansible_pull_host: icpc.cloudcontest.org # Not a real url ..... so Delete ? 
-ansible_pull_port: 443
-ansible_pull_path: ~/ansible
-
-# [Sfikas] Delete ?
-# Maybe more accurately named "ssh tunnel host"
-jumpbox_host: icpc.cloudcontest.org
-
-# [Sfikas] This is fine as long as we understand how the languages are beeing set up.
+#This is fine as long as we understand how the languages are beeing set up.
 # Check the java version that is beeing downloaded
 languages:
   - c
@@ -49,3 +16,27 @@ languages:
   - python3
 
 devtools:
+  - codeblocks
+  - geany
+  - vscode
+  - intellij-idea
+  - intellij-pycharm
+  - netbeans
+
+vscode_extensions:
+  # C/C++
+  - ms-vscode.cpptools-extension-pack
+  # Python
+  - ms-python.python
+  - kevinrose.vsc-python-indent
+  - visualstudioexptteam.vscodeintellicode
+  # Java
+  - vscjava.vscode-java-pack
+  # Misc
+  - vscodevim.vim
+  - lfs.vscode-emacs-friendly
+  # Themes
+  - akamud.vscode-theme-onedark
+  - akamud.vscode-theme-onelight
+  - tgreen7.one-monokai-dark
+  - jprestidge.theme-material-theme

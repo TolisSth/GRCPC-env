@@ -1,0 +1,18 @@
+[Unit]
+Description=Initial configuration of the image
+Before=lightdm.service
+After=cups.service getty@tty2.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+TimeoutSec=0
+TTYReset=yes
+TTYVHangup=yes
+TTYPath=/dev/tty2
+StandardInput=tty
+StandardOutput=tty
+
+[Install]
+WantedBy=graphical.target
+WantedBy=multi-user.target

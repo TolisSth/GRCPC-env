@@ -1,0 +1,19 @@
+---
+- name: java openjdk
+  apt:
+    state: present
+    pkg:
+      - openjdk-8-jdk
+      
+- name: Create a directory to store the Documentation for java
+  file:
+    path: /icpc/documentation/java
+    state: directory
+
+# Since the content of the directory is other directories, we will need to use the synchronize module
+# to copy the contents of the directory to the destination
+- name: Copy the documentation for java
+  synchronize:
+    src: files/documentation/java/
+    dest: /icpc/documentation/java/
+    recursive: yes

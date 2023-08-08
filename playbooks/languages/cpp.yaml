@@ -1,0 +1,14 @@
+---
+- name: cpp
+  apt:
+    state: present
+    pkg:
+      - g++
+
+- name: Create a directory to store the Documentation for cpp
+  file:
+    path: /icpc/documentation/cpp
+    state: directory
+
+- name: Copy the documentation for cpp
+  copy:  src=files/documentation/cpp/ dest=/icpc/documentation/cpp/

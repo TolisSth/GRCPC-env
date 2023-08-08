@@ -1,0 +1,16 @@
+---
+- name: c
+  apt:
+    state: present
+    pkg:
+      - gcc
+      - gdb
+
+- name: Create a directory to store the Documentation for c
+  file:
+    path: /icpc/documentation/c
+    state: directory
+
+- name: Copy the documentation for c
+  copy:  src=files/documentation/c/ dest=/icpc/documentation/c/
+

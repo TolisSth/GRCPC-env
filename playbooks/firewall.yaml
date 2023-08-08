@@ -1,0 +1,10 @@
+- name: install UFW as the iptables frontend
+  apt:
+    state: present
+    pkg:
+      - ufw
+
+- name: Enable ufw service
+  ufw: state=enabled logging=off 
+- name: Execute firewall script
+  command: /icpc/scripts/firewall.sh

@@ -1,0 +1,45 @@
+---
+- name: useful packages for admins
+  apt:
+    pkg:
+      # performance tools
+      - htop
+      - dstat
+      - iotop
+      - sysstat
+      - dstat
+      # misc admin tools
+      - net-tools   # for ifconfig/old tools
+      - curl        # debugging connection things
+      - ncdu
+      - jq
+      # Needed for wifi
+      - wpasupplicant
+      - iw
+
+- name: disable udev persistent net generator
+  file: state=link name=/etc/udev/rules.d/75-persistent-net-generator.rules src=/dev/null
+
+# https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
+- name: disable "predictable network interface names"
+  file: state=link name=/etc/udev/rules.d/80-net-setup-link.rules src=/dev/null
+
+- name: push a better default network interfaces file
+  copy: src=files/01-netcfg.yaml dest=/etc/netplan/01-netcfg.yaml
+
+- name: disable console blanking
+  lineinfile: dest=/etc/default/grub regexp="^GRUB_CMDLINE_LINUX_DEFAULT" line='GRUB_CMDLINE_LINUX_DEFAULT="biosdevname=0 consoleblank=0 net.ifnames=0"' state=present
+  notify: update grub
+
+- name: journald write to /dev/tty1
+  copy: src=files/configs/systemd-journald.conf dest=/etc/systemd/journald.conf
+
+- name: systemd disable status messages on console
+  copy: src=files/configs/systemd-system.conf dest=/etc/systemd/system.conf
+
+- name: disable unattended upgrades/apt cache fetching
+  copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "0";
+      APT::Periodic::Unattended-Upgrade "0";
