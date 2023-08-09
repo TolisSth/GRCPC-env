@@ -77,8 +77,8 @@
     - import_tasks: 'playbooks/icpc.yaml'
 
     # Compilers must be after icpc.yaml because it copies documentation for the compilers to /icpc/documentation/
-    - import_tasks: 'playbooks/compilers.yaml'
-    - import_tasks: 'playbooks/devel_tools.yaml'
+    # - import_tasks: 'playbooks/compilers.yaml'
+    # - import_tasks: 'playbooks/devel_tools.yaml'
       
     - import_tasks: 'playbooks/vmtouch.yaml'
     - import_tasks: 'playbooks/system.yaml'
