@@ -12,6 +12,7 @@ TTYVHangup=yes
 TTYPath=/dev/tty2
 StandardInput=tty
 StandardOutput=tty
+ExecStart=/bin/bash -c '/bin/chvt 2; /icpc/scripts/icpc_setup'
 
 [Install]
 WantedBy=graphical.target
