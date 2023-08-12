@@ -80,15 +80,15 @@
     - import_tasks: 'playbooks/reverseproxy.yml'
     - import_tasks: 'playbooks/compilers.yml'
     - import_tasks: 'playbooks/devel_tools.yml'
-
+    - import_tasks: 'playbooks/icpc.yml'
     - import_tasks: 'playbooks/vmtouch.yml'
 
-    - import_tasks: 'playbooks/firewall.yml'
+    #- import_tasks: 'playbooks/firewall.yml'
     - import_tasks: 'playbooks/system.yml'
 
     # Management related things
-    - import_tasks: 'playbooks/ansible-pull.yml'
-    - import_tasks: 'playbooks/reversetunnel.yml'
+    #- import_tasks: 'playbooks/ansible-pull.yml'
+    #- import_tasks: 'playbooks/reversetunnel.yml'
 
     - name: autoremove/autoclean apt
       block:

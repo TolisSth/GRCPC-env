@@ -4,26 +4,13 @@
       pkg: build-essential
       state: present
 
-  - name: create a lang docs fact
-    set_fact:
-      lang_docs: {}
+  - name: Create a directory to store the Documentation for the languages
+    file:
+      path: /icpc/documentation
+      state: directory
 
   - name: include various languages
-    include_tasks: "languages/{{ language }}.yml"
+    include_tasks: "languages/{{ language }}.yaml"
     loop: "{{ languages }}"
     loop_control:
       loop_var: language
-
-  - name: dump the lang_docs fact
-    debug:
-      var: lang_docs
-
-  - name: create symlinks to docs
-    file:
-      state: link
-      src: "{{item.value.path}}"
-      dest: /opt/localwww/{{item.value.id}}
-    loop: "{{ lang_docs | dict2items }}"
-
-  - name: create simple index page for links to docs
-    template: src=files/language-docs.html.j2 dest=/opt/localwww/index.html
