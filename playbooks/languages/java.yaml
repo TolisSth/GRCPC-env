@@ -4,16 +4,18 @@
     state: present
     pkg:
       - openjdk-8-jdk
-      
-- name: Create a directory to store the Documentation for java
-  file:
-    path: /icpc/documentation/java
-    state: directory
+      - openjdk-8-doc   # 246 mb 
 
-# Since the content of the directory is other directories, we will need to use the synchronize module
-# to copy the contents of the directory to the destination
-- name: Copy the documentation for java
-  synchronize:
-    src: files/documentation/java/
-    dest: /icpc/documentation/java/
-    recursive: yes
+- name: register docs
+  block:
+    - ansible.utils.update_fact:
+        updates:
+          - path: "lang_docs['Java']"
+            value:
+              name: Java API Documentation
+              id: java_api
+              path: /usr/share/doc/openjdk-8-doc/api
+              index: index.html
+      register: updated
+    - set_fact:
+        lang_docs: "{{ updated.lang_docs }}"

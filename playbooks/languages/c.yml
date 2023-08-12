@@ -1,6 +1,0 @@
----
-- name: c
-  apt:
-    state: present
-    pkg:
-      - gcc

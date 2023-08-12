@@ -4,11 +4,26 @@
     state: present
     pkg:
       - g++
+      - stl-manual # 2.5mb
 
-- name: Create a directory to store the Documentation for cpp
+- name: Create a directory to store the Documentation for the languages
   file:
-    path: /icpc/documentation/cpp
+    path: /opt/cplusplus
     state: directory
 
-- name: Copy the documentation for cpp
-  copy:  src=files/documentation/cpp/ dest=/icpc/documentation/cpp/
+- name: cpp reference docs 
+  command: curl -o /opt/cplusplus/tutorial.pdf https://cplusplus.com/files/tutorial.pdf
+
+- name: register docs
+  block:
+    - ansible.utils.update_fact:
+        updates:
+          - path: "lang_docs['C++']"
+            value:
+              name: STL Manual
+              id: stl_docs
+              path: /usr/share/doc/stl-manual/html
+              index: index.html
+      register: updated
+    - set_fact:
+        lang_docs: "{{ updated.lang_docs }}"

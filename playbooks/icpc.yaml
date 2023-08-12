@@ -36,6 +36,7 @@
     pkg:
       - git
       - unzip
+      - curl
       # - ntp # we use systemd-timesyncd instead (and installing ntp will break that)
       - enscript
       - python3-typing-extensions # needed for firstboot script

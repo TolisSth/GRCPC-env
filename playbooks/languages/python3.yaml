@@ -15,11 +15,23 @@
     install_recommends: false # it's like 500MB with recommends vs 14MB without
     pkg:
       - ipython3
-     
-- name: Create a directory to store the Documentation for python
-  file:
-    path: /icpc/documentation/python
-    state: directory
 
-- name: Copy the documentation for python
-  copy:  src=files/documentation/python/ dest=/icpc/documentation/python/
+- name: register docs
+  block:
+    - ansible.utils.update_fact:
+        updates:
+          - path: "lang_docs['Python 3']"
+            value:
+              name: Python 3 Documentation
+              id: py3
+              path: /usr/share/doc/python3-doc/html
+              index: index.html
+          - path: "lang_docs['PyPy 3']"
+            value:
+              name: PyPy3 Documentation
+              id: pypy3
+              path: /usr/share/doc/pypy3-doc/html
+              index: index.html
+      register: updated
+    - set_fact:
+        lang_docs: "{{ updated.lang_docs }}"
