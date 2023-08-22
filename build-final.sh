@@ -83,6 +83,7 @@ ANSIBLE_HOST_KEY_CHECKING=False time ansible-playbook -i $INVENTORY_FILE  --ssh-
 rm -f $INVENTORY_FILE
 
 ssh -i $SSH_ICPCADMIN_KEY -o BatchMode=yes -o ConnectTimeout=1 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes  icpcadmin@localhost -p$SSHPORT sudo reboot
+
 # Wait 5 seconds for reboot to happen so we don't ssh back in before it actually reboots
 sleep 20
 ALIVE=0
