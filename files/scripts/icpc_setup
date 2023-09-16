@@ -137,7 +137,7 @@ def main():
         sys.exit(1)
 
     # Do some _really_ basic cli argument handling
-    force = False
+    force = True
     if len(sys.argv) > 1 and (sys.argv[1] == "-f" or sys.argv[1] == "--force"):
         force = True
 
@@ -185,33 +185,45 @@ def main():
     #     configuration["print_test_page"] = False
     #     cfg_printing = False
     # else:
+    configuration['contest'] = 'demo'
+    configuration['site'] = 'demo site'
+    configuration['team'] = {
+        "id": '000',
+        "name": 'demo team',
+        "affiliation": 'fake affiliation',
+        "extra": 'team extra - like division information',
+    }
+    configuration['printers'] = []
+    configuration["print_test_page"] = False
+    cfg_printing = False
+
 
     # Choose the contest this image is participating in
-    configure_contest(w)
+    #configure_contest(w)
 
     # Choose a contest site (this will decide what teams/printers are available later)
-    configure_site(w)
+    #configure_site(w)
 
     # Choose a team that will use this computer
-    configure_team(w)
+    #configure_team(w)
 
     # configure_autologin(w) # TODO
 
     # Figure out if they want to configure printers (and what that looks like)
-    cfg_printing = configure_printing(w)
+    #cfg_printing = configure_printing(w)
 
     # show a summary/confirm they want to apply/move ont
-    if not confirm_summary(w):
+    #if not confirm_summary(w):
         # re-invoke ourselves to start over
-        os.execv(sys.argv[0], sys.argv)
+    #    os.execv(sys.argv[0], sys.argv)
 
     # Apply the configuration things previously specified
     apply_configuration()
     apply_wallpaper()
-    if cfg_printing:
-        ret = apply_printers()
-        if not ret:
-            w.msgbox("Printing configuration failed. Re-run this script to correct any printer configuration errors")
+    #if cfg_printing:
+    #    ret = apply_printers()
+    #    if not ret:
+    #        w.msgbox("Printing configuration failed. Re-run this script to correct any printer configuration errors")
 
     # Clear the screen
     print(chr(27) + "[H" + chr(27) + "[J")
