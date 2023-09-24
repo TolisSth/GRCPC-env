@@ -5,13 +5,4 @@
     pkg:
       - gcc
       - gdb
-
-- name: Create a directory to store the Documentation for C
-  file:
-    path: /icpc/documentation/c
-    state: directory
-
-- name: Download the C Standard Library documentation
-  get_url:
-    url: https://www.gnu.org/software/libc/manual/pdf/libc.pdf  # Replace with the desired URL
-    dest: /icpc/documentation/c/c-libc.pdf
+    
