@@ -35,8 +35,8 @@ depending on connection speed and various other factors.
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/SfikasTeo/icpc-env-greece.git
-cd icpc-env-greece
+git clone https://github.com/TolisSth/GRCPC-env.git
+cd GRCPC-env
 ```
 1. Make sure dependencies are met
   * Install required packages
