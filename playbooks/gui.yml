@@ -1,5 +1,5 @@
 ---
-- name: install the packages necessary to make xfce run
+- name: Installing XFCE dependencies
   apt:
     state: present
     pkg:
